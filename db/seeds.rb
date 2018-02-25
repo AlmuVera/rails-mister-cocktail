@@ -1,5 +1,22 @@
+require 'json'
+require 'open-uri'
+
 Cocktail.destroy_all
 Ingredient.destroy_all
+
+
+
+url = 'http://www.thecocktaildb.com/api/json/v1/1/list.php?i=list'
+info = open(url).read
+ingredients = JSON.parse(info)["drinks"]
+
+ingredients.each { |ingredient| Ingredient.create(name: ingredient["strIngredient1"]) }
+
+
+
+
+
+
 
 cocktails = [
   {
@@ -88,8 +105,8 @@ cocktails = [
   }
 ]
 
-ingredients = %w(lemon ice mint leaves redbull jagermeister sugar tonic gin rhum)
-ingredients.each { |ingredient| Ingredient.create(name: ingredient) }
+# ingredients = %w(lemon ice mint leaves redbull jagermeister sugar tonic gin rhum)
+# ingredients.each { |ingredient| Ingredient.create(name: ingredient) }
 
 
 cocktails.each { |cocktail| Cocktail.create(cocktail) }
